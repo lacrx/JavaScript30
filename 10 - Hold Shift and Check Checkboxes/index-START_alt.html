@@ -105,28 +105,37 @@
 
 <script>
 
-const checkboxes = [...document.querySelectorAll('input[type="checkbox"]')];
+const inputs = [...document.querySelectorAll('input')];
 
-let lastChecked;
-
-function handleCheck(e) {
-  let inBetween = false;
-  if(e.shiftKey && this.checked) {
-    checkboxes.forEach(checkbox => {
-      console.log(checkbox);
-      if(checkbox === this || checkbox === lastChecked) {
-        inBetween = !inBetween;
-        console.log(`inBetween is ${inBetween}`);
-      }
-      if(inBetween) {
-        checkbox.checked = true;
-      }
-    });
+const checkKeyValue = val => {
+  if(val === 16) {
+    return(true);
   }
-  lastChecked = this;
 }
 
-checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
+const checkTrue = input => {
+  if(input.checked === true) {
+    return(true);
+  }
+}
+
+const changeBoolTo = bool => {
+  inputs.forEach( input => {
+    input.checked = bool;
+  });
+}
+
+const changeInputValues = e => {
+  if(checkKeyValue(e.keyCode)){
+    if(inputs.every(checkTrue)) {
+      changeBoolTo(false);
+    } else {
+      changeBoolTo(true);
+    }
+  }
+}
+
+const keyDownListener = document.addEventListener('keydown', changeInputValues);
 
 </script>
 </body>
